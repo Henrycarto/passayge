@@ -7,9 +7,9 @@
   "hostRequirements": { "memory": "8gb" },
   "forwardPorts": [8080],
   "portsAttributes": {
-    "8080": { "label": "Passayge", "onAutoForward": "openBrowser" }
+    "8080": { "label": "Passayge", "onAutoForward": "silent" }
   },
   "postCreateCommand": "npm ci",
   "postStartCommand": "docker compose up -d --build",
-  "postAttachCommand": "echo 'Passayge starts in two to three minutes on port 8080 (docker compose logs -f gateway to follow).'"
+  "postAttachCommand": "bash scripts/codespace-ready.sh"
 }

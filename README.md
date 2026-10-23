@@ -2,7 +2,7 @@
 
 # Passayge
 
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Henrycarto/passayge)
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Henrycarto/passayge) First start takes about 3 minutes. If the page shows 502, HAPI is still starting; refresh after a minute.
 
 **Live demo: https://passayge.vercel.app** (demo mode: runs in your browser; the full stack runs with Docker or Codespaces)
 
@@ -27,7 +27,7 @@ Five synthetic patients each show one rule. Switch who you are acting as (a GP, 
 
 ## Run it
 
-**In GitHub Codespaces:** use the button above. The Codespace runs the full stack with Docker and opens port 8080 when it is ready (two to three minutes).
+**In GitHub Codespaces:** use the button above. The Codespace runs the full stack with Docker and opens Passayge in your browser once the gateway answers. First start takes about 3 minutes. If the page shows 502, HAPI is still starting; refresh after a minute.
 
 **On your machine:** you need Docker.
 
