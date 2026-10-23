@@ -1,0 +1,82 @@
+name: ci
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  check:
+    name: Typecheck, lint, checks and unit tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run lint
+      - name: No personal data in the repository or in request code
+        run: npm run check:personal-data
+      - name: No em dashes
+        run: |
+          if git grep -I -n -P "\x{2014}" -- . ':!package-lock.json'; then echo "Em dash found"; exit 1; fi
+      - name: Unit tests (access rules, gateway with a fake FHIR server, client with axe in jsdom)
+        run: npm test
+      - name: Production build
+        run: npm run build
+
+  integration:
+    name: Integration with HAPI FHIR and FHIR validation
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Start HAPI FHIR with the HL7 Austria FHIR Core profiles
+        run: docker compose -f docker-compose.yml -f docker-compose.dev.yml up -d --build hapi
+      - name: Wait for HAPI
+        run: |
+          for i in $(seq 1 90); do
+            curl -sf http://localhost:8091/fhir/metadata > /dev/null && exit 0
+            sleep 4
+          done
+          docker compose logs hapi | tail -50
+          exit 1
+      - name: Gateway against HAPI (ITI-78, ITI-67, ITI-68, ITI-20, ITI-81, AT Core)
+        run: npm run test:integration
+      - name: Validate every resource the sandbox writes (fails on errors, reports warnings)
+        run: npm run validate:fhir
+
+  browser:
+    name: Browser tests with axe on the Docker Compose stack
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Start the sandbox (docker compose up)
+        run: docker compose up -d --build
+      - name: Wait for the gateway
+        run: |
+          for i in $(seq 1 120); do
+            curl -sf http://localhost:8080/api/health > /dev/null && exit 0
+            sleep 4
+          done
+          docker compose logs | tail -80
+          exit 1
+      - name: Browser tests (tour, access flows, keyboard, tooltips, axe light and dark, no external requests)
+        run: npm run test:e2e
+      - if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: apps/web/test-results
