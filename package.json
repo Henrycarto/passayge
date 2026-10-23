@@ -1,0 +1,35 @@
+{
+  "name": "passayge",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Unofficial sandbox that shows how patient data moves in an ELGA-style health data exchange, rebuilt on IHE FHIR profiles.",
+  "license": "MIT",
+  "type": "module",
+  "workspaces": [
+    "packages/core",
+    "apps/gateway",
+    "apps/web"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "node scripts/dev.mjs",
+    "build": "npm run build -w @passayge/web && npm run build -w @passayge/gateway",
+    "typecheck": "npm run typecheck --workspaces",
+    "lint": "eslint .",
+    "test": "npm run test --workspaces --if-present",
+    "test:integration": "npm run test:integration -w @passayge/gateway",
+    "test:e2e": "npm run test:e2e -w @passayge/web",
+    "validate:fhir": "npm run validate:fhir -w @passayge/gateway",
+    "check:personal-data": "node scripts/check-personal-data.mjs"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.0",
+    "eslint": "^9.39.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.72.0"
+  }
+}

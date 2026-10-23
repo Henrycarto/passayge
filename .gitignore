@@ -1,0 +1,12 @@
+node_modules/
+dist/
+coverage/
+*.tsbuildinfo
+.env*
+
+# Playwright
+test-results/
+playwright-report/
+
+# Local Docker data, never in the synced folder's history
+.docker-data/

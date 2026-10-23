@@ -1,0 +1,25 @@
+# Added to the HAPI starter's own configuration (Spring loads /app/config/application.yaml).
+hapi:
+  fhir:
+    fhir_version: R4
+    # Bulk delete is used by the sandbox reset for audit events written in a session.
+    allow_multiple_delete: true
+    # Searches must see new audit events at once (the default reuses results for 60 s).
+    reuse_cached_search_results_millis: 0
+    install_transitive_ig_dependencies: false
+    implementationguides:
+      terminology:
+        packageUrl: file:///packages/hl7.terminology.r4-6.2.0.tgz
+        name: hl7.terminology.r4
+        version: 6.2.0
+        installMode: STORE_ONLY
+      extensions:
+        packageUrl: file:///packages/hl7.fhir.uv.extensions.r4-5.1.0.tgz
+        name: hl7.fhir.uv.extensions.r4
+        version: 5.1.0
+        installMode: STORE_ONLY
+      atcore:
+        packageUrl: file:///packages/hl7.at.fhir.core.r4-2.0.0.tgz
+        name: hl7.at.fhir.core.r4
+        version: 2.0.0
+        installMode: STORE_AND_INSTALL

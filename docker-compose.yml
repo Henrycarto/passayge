@@ -1,0 +1,26 @@
+# Passayge sandbox: HAPI FHIR (internal network only) and the gateway, which serves the web client.
+# docker compose up --build, then open http://localhost:8080
+
+services:
+  hapi:
+    build: ./infra/hapi
+    networks: [fhir]
+    # No ports: HAPI is reachable only by the gateway.
+
+  gateway:
+    build:
+      context: .
+      dockerfile: apps/gateway/Dockerfile
+    environment:
+      HAPI_URL: http://hapi:8080/fhir
+      PORT: "8080"
+      HOST: 0.0.0.0
+    ports: ["8080:8080"]
+    networks: [fhir, public]
+    depends_on: [hapi]
+
+networks:
+  # internal: no route to the internet from this network.
+  fhir:
+    internal: true
+  public: {}
