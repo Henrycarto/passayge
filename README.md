@@ -2,6 +2,8 @@
 
 # Passayge
 
+[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Henrycarto/passayge)
+
 Say it like "passage". A sandbox that shows how patient data moves in an ELGA-style health data exchange: finding a patient, the e-card contact confirmation that opens their records for a limited time, reading documents, and an audit log of every access.
 
 **Unofficial simulation. Not affiliated with or endorsed by ELGA GmbH, the Dachverband der österreichischen Sozialversicherungsträger or HL7 International.** Passayge is not connected to ELGA, the e-card system or any real service. Every person, provider and record in it is synthetic.
@@ -23,7 +25,9 @@ Five synthetic patients each show one rule. Switch who you are acting as (a GP, 
 
 ## Run it
 
-You need Docker.
+**In GitHub Codespaces:** use the button above. The Codespace runs the full stack with Docker and opens port 8080 when it is ready (two to three minutes).
+
+**On your machine:** you need Docker.
 
 ```bash
 git clone https://github.com/Henrycarto/passayge.git
@@ -34,6 +38,10 @@ docker compose up --build
 Open http://localhost:8080. The first start takes two to three minutes while HAPI FHIR loads the HL7 Austria profiles; the gateway seeds the synthetic data once HAPI is ready. A short tour opens on the first visit and can be reopened from the ? button.
 
 Development, tests and how to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).
+
+### Demo mode
+
+The hosted demo is the same web client built with `VITE_DEMO=1`. Demo mode: runs in your browser; the full stack runs with Docker or Codespaces. The sandbox engine (the same access rules, audit records, network log and routes the gateway serves) runs in the browser with an in-memory FHIR store standing in for HAPI FHIR. There is no AT Core profile validation in demo mode, and everything resets when the page reloads. The interface says so in a strip at the top of every page.
 
 ## How it is built
 
@@ -88,11 +96,11 @@ Names, practices, hospitals, pharmacies, laboratories and documents are made up.
 
 | Suite | Tests | What |
 |---|---|---|
-| Access rules and data | 33 | every rule, including the exact expiry boundary, SVNR, CDA, audit records |
+| Access rules, data and engine | 41 | every rule, including the exact expiry boundary, SVNR, CDA, audit records, the engine with the in-memory store |
 | Gateway | 27 | every rule over HTTP, every IHE transaction, the audit record for each case, egress |
 | Gateway with HAPI FHIR | 7 | AT Core validation, ITI-78, ITI-67, ITI-68, ITI-20, ITI-81 end to end |
 | Web client | 24 | tooltips, tour, glossary, axe |
-| Browser | 17 | tour, access flows, keyboard, axe in light and dark, no request leaving the sandbox |
+| Browser | 17 | tour, access flows, keyboard, axe in light and dark, no request leaving the sandbox; run against the Docker stack and against the demo build |
 
 ## Sources
 

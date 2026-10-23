@@ -1,5 +1,6 @@
 import { SOURCES } from '@passayge/core';
 import { Term } from '@/components/Tooltip';
+import { DEMO, DEMO_LABEL } from '@/lib/mode';
 
 export const UNOFFICIAL =
   'Unofficial simulation. Not affiliated with or endorsed by ELGA GmbH, the Dachverband der österreichischen Sozialversicherungsträger or HL7 International.';
@@ -21,6 +22,21 @@ export function AboutPage() {
       <p>
         The flows are ELGA-style, rebuilt on <Term id="ihe">IHE</Term> <Term id="fhir">FHIR</Term> profiles. ELGA itself uses HL7 <Term id="cda">CDA</Term> documents and SOAP-based IHE transactions; next to every call, Passayge shows the ELGA transaction it stands in for.
       </p>
+
+      {DEMO && (
+        <>
+          <h2>Demo mode</h2>
+          <p>
+            <strong>{DEMO_LABEL}</strong> In this demo the sandbox engine (the same access rules, audit records and network log) runs in your browser with an in-memory FHIR store instead of HAPI FHIR, so
+            there is no AT Core profile validation, and everything resets when you reload the page. The full stack, with HAPI FHIR and the HL7 Austria profiles, runs with{' '}
+            <code>docker compose up</code> or in{' '}
+            <a href="https://codespaces.new/Henrycarto/passayge" target="_blank" rel="noreferrer">
+              GitHub Codespaces
+            </a>
+            .
+          </p>
+        </>
+      )}
 
       <h2>What is real</h2>
       <ul>

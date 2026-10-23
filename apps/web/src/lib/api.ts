@@ -3,6 +3,12 @@
 
 import type { Bundle, DocumentReference, Patient } from 'fhir/r4';
 import type { AuditRecord, DataKind, Decision, PatientSettings, Provider, TransactionId } from '@passayge/core';
+import { DEMO } from './mode';
+
+// The demo build answers the same paths in the browser; it is loaded only there.
+const transport: Promise<(input: string, init?: RequestInit) => Promise<Response>> = DEMO
+  ? import('./demo').then((m) => m.demoFetch)
+  : Promise.resolve((input, init) => fetch(input, init));
 
 export interface PublicDecision extends Decision {
   explanation: string;
@@ -53,7 +59,7 @@ export class ApiError extends Error {
 export const CHANGED = 'passayge:changed';
 
 async function request<T>(path: string, init?: RequestInit & { json?: unknown; silent?: boolean }, as: 'json' | 'text' = 'json'): Promise<T> {
-  const res = await fetch(path, {
+  const res = await (await transport)(path, {
     ...init,
     headers: { accept: as === 'json' ? 'application/json, application/fhir+json' : 'text/xml', ...(init?.json !== undefined ? { 'content-type': 'application/json' } : {}) },
     body: init?.json !== undefined ? JSON.stringify(init.json) : init?.body,

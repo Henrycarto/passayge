@@ -63,7 +63,7 @@ export function Reader({ doc }: { doc: DocumentReference }) {
               <b>
                 <Term id="entered-in-error">Entered in error.</Term>
               </b>{' '}
-              The author withdrew this document. It is shown for the record only; do not use its values.
+              The author withdrew this document. Its values are not shown; use the corrected report.
             </span>
           </div>
         )}
@@ -80,7 +80,9 @@ export function Reader({ doc }: { doc: DocumentReference }) {
         )}
         {cda &&
           cda.sections
-            .filter((s) => !(cda.observations.length > 0 && !voided && s.title === 'Results'))
+            // A withdrawn report never shows its values; a valid one shows them as LabResult cards above.
+            .filter((s) => !(cda.observations.length > 0 && s.title === 'Results'))
+            .filter((s) => !(voided && s.table))
             .map((s, i) => (
               <section key={i}>
                 <h4>{s.title}</h4>

@@ -30,6 +30,8 @@ npm run validate:fhir            # every resource the sandbox writes, validated 
 npm run test:e2e                 # browser tests with axe (needs docker compose up)
 ```
 
+The static demo (engine in the browser, no HAPI) builds with `VITE_DEMO=1 npm run build -w @passayge/web`; run the browser tests against it with `E2E_BASE_URL=http://localhost:4173 npm run test:e2e` after `npx --workspace @passayge/web vite preview --port 4173`.
+
 CI runs all of these on every push and pull request.
 
 ## Propose a change

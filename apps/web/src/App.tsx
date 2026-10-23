@@ -9,6 +9,7 @@ import { AboutPage } from '@/pages/AboutPage';
 import { HomePage } from '@/pages/HomePage';
 import { LAST_PATIENT, LogPage } from '@/pages/LogPage';
 import { PatientPage } from '@/pages/PatientPage';
+import { DEMO, DEMO_LABEL } from '@/lib/mode';
 
 type Theme = 'light' | 'dark';
 const THEME_KEY = 'passayge.theme';
@@ -83,6 +84,14 @@ export function App() {
       <a className="sr-only" href="#main">
         Skip to main content
       </a>
+      {DEMO && (
+        <p className="demo-strip">
+          <strong>{DEMO_LABEL}</strong>{' '}
+          <a href="https://codespaces.new/Henrycarto/passayge" target="_blank" rel="noreferrer">
+            Open the full stack in Codespaces
+          </a>
+        </p>
+      )}
       <TopBar theme={theme} onTheme={toggleTheme} onHelp={() => setMenu((m) => !m)} helpOpen={menu} />
       <SideNav route={route} onGlossary={() => setGlossary(true)} />
       <main id="main" tabIndex={-1}>

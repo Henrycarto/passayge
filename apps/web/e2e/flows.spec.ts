@@ -84,7 +84,11 @@ test.describe('access', () => {
     await page.goto('/patients/pas-theresia');
     await page.getByRole('button', { name: 'Laboratory report' }).nth(1).click();
     await expect(page.getByRole('note')).toContainText('Entered in error.');
-    await expect(page.locator('.reader').getByText('11.2 mg/dL')).toHaveCount(0);
+    // Wait for the document itself, then check that none of its values are shown.
+    await expect(page.locator('.reader').getByText('Opening the document')).toHaveCount(0);
+    await expect(page.locator('.reader')).toContainText('Its values are not shown');
+    await expect(page.locator('.reader').getByText(/11\.2/)).toHaveCount(0);
+    await expect(page.locator('.reader').getByText(/7\.8/)).toHaveCount(0);
   });
 
   test('abnormal lab results show with a flag in words', async ({ returning: page }) => {

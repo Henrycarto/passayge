@@ -7,7 +7,8 @@ import { GLOSSARY_BY_ID } from '@passayge/core';
 
 type AnyProps = Record<string, unknown> & { ref?: unknown };
 
-export function Tip({ content, children }: { content: ReactNode; children: ReactElement<AnyProps> }) {
+/** `right` keeps the tooltip beside its control, for controls with content right below (the search box). */
+export function Tip({ content, children, placement = 'below' }: { content: ReactNode; children: ReactElement<AnyProps>; placement?: 'below' | 'right' }) {
   const id = useId();
   const [open, setOpen] = useState(false);
   const [anchor, setAnchor] = useState<HTMLElement | null>(null);
@@ -54,11 +55,15 @@ export function Tip({ content, children }: { content: ReactNode; children: React
     if (!open || !anchor || !tip.current) return;
     const a = anchor.getBoundingClientRect();
     const t = tip.current.getBoundingClientRect();
+    if (placement === 'right' && a.right + 8 + t.width < window.innerWidth) {
+      setPos({ top: Math.max(8, Math.min(a.top, window.innerHeight - t.height - 8)), left: a.right + 8 });
+      return;
+    }
     const below = a.bottom + 8 + t.height < window.innerHeight;
     const top = below ? a.bottom + 8 : a.top - 8 - t.height;
     const left = Math.min(Math.max(8, a.left), window.innerWidth - t.width - 8);
     setPos({ top, left });
-  }, [open, anchor]);
+  }, [open, anchor, placement]);
 
   useEffect(() => () => window.clearTimeout(timer), [timer]);
 

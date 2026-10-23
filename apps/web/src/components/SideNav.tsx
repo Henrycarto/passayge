@@ -77,7 +77,7 @@ export function SideNav({ route, onGlossary }: { route: Route; onGlossary: () =>
         </a>
       </div>
       <form className="search-form" role="search" onSubmit={onSubmit} data-tour="search">
-        <Tip content="Search by family name, date of birth (14.03.1962) or social security number. Runs ITI-78, a FHIR patient search. Shortcut: /">
+        <Tip placement="right" content="Search by family name, date of birth (14.03.1962) or social security number. Runs ITI-78, a FHIR patient search. Shortcut: /">
           <label className="search-box">
             <Search aria-hidden="true" size={16} />
             <span className="sr-only">Find a patient</span>

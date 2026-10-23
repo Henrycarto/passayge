@@ -5,6 +5,7 @@ import { CHANGED, api, type NetEntry } from '@/lib/api';
 import { dayKey, fmtDay, fmtTimeS, fmtWeekday } from '@/lib/format';
 import { navigate, onLinkClick } from '@/lib/route';
 import { useSession } from '@/lib/session';
+import { DEMO } from '@/lib/mode';
 import { Status } from '@/components/Status';
 import { Term, Tip } from '@/components/Tooltip';
 
@@ -384,6 +385,7 @@ function NetworkView() {
       </div>
       <p className="src" style={{ marginTop: 0 }}>
         Every call the sandbox made, named by its <Term id="iti">IHE transaction</Term>. The client talks only to the sandbox gateway; the gateway talks only to its own <Term id="fhir">FHIR</Term> server. Nothing goes to ELGA or any real service.
+        {DEMO && ' In demo mode the calls are answered in your browser by an in-memory FHIR store standing in for HAPI FHIR.'}
       </p>
       {!entries ? (
         <p className="empty">Loading…</p>
