@@ -7,6 +7,7 @@ import { fmtDay } from '@/lib/format';
 import { Reader } from './Reader';
 import { Status } from './Status';
 import { Tip } from './Tooltip';
+import { useEdgeFade } from '@/lib/useEdgeFade';
 
 const TAB: Record<DataKind, { label: string; icon: typeof FileText; term: string }> = {
   documents: { label: 'Documents', icon: FileText, term: 'documents' },
@@ -34,6 +35,9 @@ export function Records({ patientId, access, version }: { patientId: string; acc
   const [loaded, setLoaded] = useState<Loaded>();
   const [selected, setSelected] = useState<string>();
   const tabs = useRef<(HTMLButtonElement | null)[]>([]);
+  // On narrow screens the tabs scroll sideways; a fade marks the edge that hides more.
+  const strip = useRef<HTMLDivElement>(null);
+  const fade = useEdgeFade(strip);
 
   const key = `${patientId}|${kind}|${version}`;
   useEffect(() => {
@@ -62,13 +66,15 @@ export function Records({ patientId, access, version }: { patientId: string; acc
     const j = (next + kinds.length) % kinds.length;
     setKind(kinds[j]!);
     tabs.current[j]?.focus();
+    tabs.current[j]?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
   };
 
   const doc = current?.docs?.find((d) => d.id === selected);
 
   return (
     <section className="panel" aria-label="Records">
-      <div className="tabs" role="tablist" aria-label="Record types" data-tour="records">
+      <div className="tabs-wrap" data-fade-left={fade.left || undefined} data-fade-right={fade.right || undefined}>
+      <div className="tabs" role="tablist" aria-label="Record types" data-tour="records" ref={strip}>
         {kinds.map((k, i) => {
           const d = access.decisions[k];
           const Icon = d.outcome === 'granted' ? TAB[k].icon : d.outcome === 'expired' ? ClockAlert : Lock;
@@ -92,6 +98,7 @@ export function Records({ patientId, access, version }: { patientId: string; acc
             </button>
           );
         })}
+      </div>
       </div>
       <div role="tabpanel" id={`panel-${kind}`} aria-labelledby={`tab-${kind}`}>
         {!current ? (

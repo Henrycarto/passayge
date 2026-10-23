@@ -200,6 +200,13 @@ main { min-width: 0; display: flex; flex-direction: column; }
 .portal legend { font-weight: 600; margin-bottom: var(--s1); }
 
 /* Tabs */
+.tabs-wrap { position: relative; }
+.tabs-wrap::before, .tabs-wrap::after { content: ''; position: absolute; top: 0; bottom: 1px; width: 40px; pointer-events: none; opacity: 0; transition: opacity 120ms; }
+.tabs-wrap::before { left: 0; background: linear-gradient(to left, transparent, var(--bg)); }
+.tabs-wrap::after { right: 0; background: linear-gradient(to right, transparent, var(--bg)); }
+.tabs-wrap[data-fade-left]::before, .tabs-wrap[data-fade-right]::after { opacity: 1; }
+.tabs { scrollbar-width: none; }
+.tabs::-webkit-scrollbar { display: none; }
 .tabs { display: flex; gap: var(--s4); border-bottom: 1px solid var(--border); margin: 0 0 var(--s3); overflow-x: auto; }
 .tabs button { background: none; border: 0; padding: var(--s2) 0; margin-bottom: -1px; border-bottom: 2px solid transparent; display: inline-flex; gap: var(--s2); align-items: center; color: var(--muted); cursor: pointer; font: inherit; white-space: nowrap; }
 .tabs button[aria-selected='true'] { color: var(--text); font-weight: 600; border-bottom-color: var(--accent); }

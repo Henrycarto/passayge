@@ -21,16 +21,18 @@ export function toQuery(input: string): Record<string, string> | undefined {
 
 export function SideNav({ route, onGlossary }: { route: Route; onGlossary: () => void }) {
   const { now, version } = useSession();
-  const [q, setQ] = useState('Brandst');
+  const [q, setQ] = useState('');
   const [results, setResults] = useState<Patient[]>();
   const [message, setMessage] = useState<string>();
 
-  const [submitted, setSubmitted] = useState(q);
+  // `n` counts submissions, so searching the same text again runs again.
+  const [submitted, setSubmitted] = useState({ text: '', n: 0 });
 
-  // Runs the search on submit, and again after every sandbox change.
+  // Runs the search on submit, and again after every sandbox change. Nothing runs before the first search.
   useEffect(() => {
+    if (submitted.n === 0) return;
     let live = true;
-    const query = toQuery(submitted);
+    const query = toQuery(submitted.text);
     const run = query ? api.searchPatients(query) : Promise.reject(new Error('Type a name, a date of birth (14.03.1962) or a social security number.'));
     run
       .then((b) => {
@@ -51,7 +53,7 @@ export function SideNav({ route, onGlossary }: { route: Route; onGlossary: () =>
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    setSubmitted(q);
+    setSubmitted((s) => ({ text: q, n: s.n + 1 }));
   };
 
   const current = route.name === 'patient' ? route.id : undefined;
