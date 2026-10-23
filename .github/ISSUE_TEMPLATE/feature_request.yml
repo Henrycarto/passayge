@@ -1,0 +1,22 @@
+name: Feature request
+description: Suggest something the sandbox should show or explain.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What would it help someone understand?
+      description: The question a learner or clinician has that the sandbox does not answer yet.
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: Your idea
+    validations:
+      required: true
+  - type: textarea
+    id: source
+    attributes:
+      label: Sources
+      description: If the idea is about how ELGA, the e-card system or a standard works, link the official source.

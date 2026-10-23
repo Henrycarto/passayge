@@ -1,0 +1,36 @@
+name: This does not match how ELGA works
+description: The sandbox shows a rule, flow or term differently from the real system.
+labels: [accuracy]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thank you. Passayge only models rules that have an official or primary source, so please include one.
+        Accepted sources include ris.bka.gv.at, elga.gv.at, gesundheit.gv.at, chipkarte.at, sozialversicherung.at,
+        Ärztekammer sites, hl7.at, ihe.net and hl7.org.
+  - type: textarea
+    id: sandbox
+    attributes:
+      label: What the sandbox shows
+      description: The screen, rule or text, and where you saw it.
+    validations:
+      required: true
+  - type: textarea
+    id: real
+    attributes:
+      label: How it works in ELGA
+    validations:
+      required: true
+  - type: input
+    id: source
+    attributes:
+      label: Official source (link)
+      description: A link to the official or primary source, with the paragraph or section.
+      placeholder: https://www.ris.bka.gv.at/...
+    validations:
+      required: true
+  - type: textarea
+    id: quote
+    attributes:
+      label: The exact wording
+      description: Quote the passage, in German if that is the original, with your translation.

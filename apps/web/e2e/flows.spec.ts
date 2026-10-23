@@ -106,6 +106,9 @@ test.describe('keyboard and tooltips', () => {
     await page.keyboard.press('g');
     await page.keyboard.press('l');
     await expect(page).toHaveURL(/\/log\?patient=pas-theresia/);
+    // Let the audit log finish loading before moving through it (this raced under load once).
+    await page.waitForLoadState('networkidle');
+    await expect(page.locator('table.audit tbody tr.row').nth(1)).toBeVisible();
     await expect(page.locator('table.audit tbody tr.row').first()).toHaveClass(/sel/);
     await page.keyboard.press('j');
     await expect(page.locator('table.audit tbody tr.row').nth(1)).toHaveClass(/sel/);
