@@ -4,6 +4,8 @@
 
 [![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/Henrycarto/passayge)
 
+**Live demo: https://passayge.vercel.app** (demo mode: runs in your browser; the full stack runs with Docker or Codespaces)
+
 Say it like "passage". A sandbox that shows how patient data moves in an ELGA-style health data exchange: finding a patient, the e-card contact confirmation that opens their records for a limited time, reading documents, and an audit log of every access.
 
 **Unofficial simulation. Not affiliated with or endorsed by ELGA GmbH, the Dachverband der österreichischen Sozialversicherungsträger or HL7 International.** Passayge is not connected to ELGA, the e-card system or any real service. Every person, provider and record in it is synthetic.
@@ -41,7 +43,7 @@ Development, tests and how to contribute: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ### Demo mode
 
-The hosted demo is the same web client built with `VITE_DEMO=1`. Demo mode: runs in your browser; the full stack runs with Docker or Codespaces. The sandbox engine (the same access rules, audit records, network log and routes the gateway serves) runs in the browser with an in-memory FHIR store standing in for HAPI FHIR. There is no AT Core profile validation in demo mode, and everything resets when the page reloads. The interface says so in a strip at the top of every page.
+The hosted demo at https://passayge.vercel.app is the same web client built with `VITE_DEMO=1`. Demo mode: runs in your browser; the full stack runs with Docker or Codespaces. The sandbox engine (the same access rules, audit records, network log and routes the gateway serves) runs in the browser with an in-memory FHIR store standing in for HAPI FHIR. There is no AT Core profile validation in demo mode, and everything resets when the page reloads. The interface says so in a strip at the top of every page.
 
 ## How it is built
 

@@ -10,3 +10,9 @@ playwright-report/
 
 # Local Docker data, never in the synced folder's history
 .docker-data/
+
+# Vercel CLI link (local only)
+.vercel/
+
+.vercel
+.env*
